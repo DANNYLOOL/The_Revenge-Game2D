@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private Animator anim;
     private Vector2 direccion;
 
     [Header("Estadisticas")]
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -52,9 +54,37 @@ public class PlayerController : MonoBehaviour
         {
             if (enSuelo)
             {
+                anim.SetBool("saltar", true);
                 Saltar();
             }
         }
+
+        float velocidad;
+        if (rb.velocity.y > 0)
+        {
+            velocidad = 1;
+        }
+        else
+        {
+            velocidad = -1;
+        }
+
+        if (!enSuelo)
+        {
+            anim.SetFloat("velocidadVertical", velocidad);
+        }
+        else
+        {
+            if (velocidad == -1)
+            {
+                FinalizarSalto();
+            }
+        }
+    }
+
+    public void FinalizarSalto()
+    {
+        anim.SetBool("saltar", false);
     }
 
     private void MejorarSalto()
@@ -88,6 +118,15 @@ public class PlayerController : MonoBehaviour
 
             if (direccion != Vector2.zero)
             {
+                if (!enSuelo)
+                {
+                    anim.SetBool("saltar", true);
+                }
+                else
+                {
+                    anim.SetBool("caminar", true);
+                }
+
                 if (direccion.x < 0 && transform.localScale.x > 0)
                 {
                     transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
@@ -96,6 +135,10 @@ public class PlayerController : MonoBehaviour
                 {
                     transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 }
+            }
+            else
+            {
+                anim.SetBool("caminar", false);
             }
         }
     }

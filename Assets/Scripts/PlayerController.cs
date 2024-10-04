@@ -7,8 +7,18 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 direccion;
 
+    [Header("Estadisticas")]
     public float velocidadDeMovimiento = 10;
     public float fuerzaDeSalto = 5;
+
+    [Header("Estadisticas")]
+    public LayerMask layerPiso;
+    public float radioDeColision;
+    public Vector2 abajo;
+
+    [Header("Booleanos")]
+    public bool puedeMover = true;
+    public bool enSuelo = true;
 
     private void Awake()
     {
@@ -25,6 +35,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Movimiento();
+        Agarres();
     }
 
     private void Movimiento()
@@ -39,7 +50,10 @@ public class PlayerController : MonoBehaviour
         MejorarSalto();
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Saltar();
+            if (enSuelo)
+            {
+                Saltar();
+            }
         }
     }
 
@@ -55,6 +69,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Agarres()
+    {
+        enSuelo = Physics2D.OverlapCircle((Vector2)transform.position + abajo, radioDeColision, layerPiso);
+    }
+
     private void Saltar()
     {
         rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -63,6 +82,21 @@ public class PlayerController : MonoBehaviour
 
     private void Caminar()
     {
-        rb.velocity = new Vector2(direccion.x * velocidadDeMovimiento, rb.velocity.y);
+        if (puedeMover)
+        {
+            rb.velocity = new Vector2(direccion.x * velocidadDeMovimiento, rb.velocity.y);
+
+            if (direccion != Vector2.zero)
+            {
+                if (direccion.x < 0 && transform.localScale.x > 0)
+                {
+                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                }
+                else if (direccion.x > 0 && transform.localScale.x < 0)
+                {
+                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                }
+            }
+        }
     }
 }

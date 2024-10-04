@@ -517,7 +517,7 @@ GameObject:
   - component: {fileID: 561245746}
   - component: {fileID: 561245745}
   - component: {fileID: 561245744}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2897,6 +2897,7 @@ GameObject:
   - component: {fileID: 1419749518}
   - component: {fileID: 1419749517}
   - component: {fileID: 1419749519}
+  - component: {fileID: 1419749520}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2965,7 +2966,7 @@ Transform:
   m_GameObject: {fileID: 1419749514}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.92, y: -0.32, z: 0}
+  m_LocalPosition: {x: 0.92, y: -1.196231, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3047,6 +3048,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidadDeMovimiento: 10
   fuerzaDeSalto: 7
+  layerPiso:
+    serializedVersion: 2
+    m_Bits: 64
+  radioDeColision: 0.1
+  abajo: {x: 0, y: -0.8}
+  puedeMover: 1
+  enSuelo: 1
+--- !u!95 &1419749520
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1419749514}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 53521a935d25cef4990bc3adf884ede8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1621495942
 GameObject:
   m_ObjectHideFlags: 0
@@ -3430,7 +3459,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2006816880}
   - component: {fileID: 2006816879}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}

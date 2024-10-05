@@ -109,7 +109,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blend Tree
+  m_Name: velocidadVertical
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: c0cfac74b52a9fd4683801ee7e9e5c25, type: 2}
@@ -127,7 +127,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: velocidadVertical
     m_Mirror: 0
-  m_BlendParameter: Blend
+  m_BlendParameter: velocidadVertical
   m_BlendParameterY: Blend
   m_MinThreshold: -1
   m_MaxThreshold: 1
@@ -240,7 +240,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Salto
+  m_Name: velocidadVertical
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private Vector2 direccion;
     private CinemachineVirtualCamera cm;
+    private Vector2 direccionMovimiento;
 
     [Header("Estadisticas")]
     public float velocidadDeMovimiento = 10;
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask layerPiso;
     public float radioDeColision;
     public Vector2 abajo;
-    public float velocidadDash = 20;
+    
 
     [Header("Booleanos")]
     public bool puedeMover = true;
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public bool haciendoDash;
     public bool tocadoPiso;
     public bool haciendoShake;
+    public bool estaAtacando;
 
     private void Awake()
     {
@@ -49,6 +51,42 @@ public class PlayerController : MonoBehaviour
         Movimiento();
         Agarres();
     }
+
+    private void Atacar(Vector2 direccion)
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (!estaAtacando && !haciendoDash)
+            {
+                estaAtacando = true;
+
+                anim.SetFloat("ataqueX", direccion.x);
+                anim.SetFloat("ataqueY", direccion.y);
+
+                anim.SetBool("atacar", true);
+
+            }    
+        }
+    }
+
+    public void FinalizarAtaque()
+    {
+        anim.SetBool("atacar", false);
+        estaAtacando = false;
+    }
+
+    private Vector2 DireccionAtaque(Vector2 direccionMovimiento, Vector2 direccion)
+    {
+        if (rb.velocity.x == 0 && direccion.y != 0)
+        {
+            return new Vector2(0, direccion.y);
+        }
+
+        return new Vector2(direccionMovimiento.x, direccion.y);
+    }
+
+
+
 
     private IEnumerator AgitarCamara()
     {
@@ -126,8 +164,10 @@ public class PlayerController : MonoBehaviour
         float yRaw = Input.GetAxisRaw("Vertical");
 
         direccion = new Vector2(x, y);
+        Vector2 direccionRaw = new Vector2(xRaw, yRaw);
 
         Caminar();
+        Atacar(DireccionAtaque(direccionMovimiento, direccionRaw));
 
         MejorarSalto();
         if (Input.GetKeyDown(KeyCode.Space))
@@ -228,15 +268,21 @@ public class PlayerController : MonoBehaviour
 
                 if (direccion.x < 0 && transform.localScale.x > 0)
                 {
+                    direccionMovimiento = DireccionAtaque(Vector2.left, direccion);
                     transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
                 }
                 else if (direccion.x > 0 && transform.localScale.x < 0)
                 {
+                    direccionMovimiento = DireccionAtaque(Vector2.right, direccion);
                     transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 }
             }
             else
             {
+                if(direccion.y > 0 && direccion.x ==0)
+                {
+                    direccionMovimiento = DireccionAtaque(direccion, Vector2.up);
+                }
                 anim.SetBool("caminar", false);
             }
         }

@@ -44,9 +44,9 @@ public class RippleEffect : MonoBehaviour
             time = 1000;
         }
 
-        public void Reset(Vector2 position)
+        public void Reset(Vector2 posicion)
         {
-            position = position;
+            position = posicion;
             time = 0;
         }
 
@@ -126,8 +126,8 @@ public class RippleEffect : MonoBehaviour
         Graphics.Blit(source, destination, material);
     }
 
-    public void Emit(Vector2 position)
+    public void Emit(Vector2 posicion)
     {
-        droplets[dropCount++ % droplets.Length].Reset(position);
+        droplets[dropCount++ % droplets.Length].Reset(posicion);
     }
 }

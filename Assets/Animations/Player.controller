@@ -601,14 +601,14 @@ AnimatorStateMachine:
     m_Position: {x: 100, y: 440, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7594252811346814439}
-    m_Position: {x: 680, y: 590, z: 0}
+    m_Position: {x: 630, y: 450, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 70, y: 40, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_EntryPosition: {x: -20, y: 220, z: 0}
   m_ExitPosition: {x: 640, y: 0, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -3765567001730825022}
@@ -857,7 +857,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: velocidadVertical
+  m_Name: Salto
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:

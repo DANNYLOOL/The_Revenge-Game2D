@@ -91,9 +91,6 @@ public class PlayerController : MonoBehaviour
         return new Vector2(direccionMovimiento.x, direccion.y);
     }
 
-
-
-
     private IEnumerator AgitarCamara()
     {
         haciendoShake = true;

@@ -10,7 +10,10 @@ public class AreaAtaque : MonoBehaviour
 
         if(collision.CompareTag("Enemigo"))
         {
-            Debug.Log("Aplicar daño a enemigo");
+            if (collision.name == "Bat")
+            {
+                collision.GetComponent<Bat>().RecibirDaño();
+            }
         }
     }
 

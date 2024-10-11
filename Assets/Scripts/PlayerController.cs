@@ -16,11 +16,12 @@ public class PlayerController : MonoBehaviour
     public float velocidadDeMovimiento = 10;
     public float fuerzaDeSalto = 5;
     public float velocidadDash = 20;
+    public float velocidadDeslizar;
 
     [Header("Colisiones")]
     public LayerMask layerPiso;
     public float radioDeColision;
-    public Vector2 abajo;
+    public Vector2 abajo, derecha, izquierda;
     
 
     [Header("Booleanos")]
@@ -31,6 +32,11 @@ public class PlayerController : MonoBehaviour
     public bool tocadoPiso;
     public bool haciendoShake;
     public bool estaAtacando;
+    public bool enMuro;
+    public bool muroDerecho;
+    public bool muroIzquierdo;
+    public bool agarrarse;
+    public bool saltarDeMuro;
 
     private void Awake()
     {
@@ -168,6 +174,66 @@ public class PlayerController : MonoBehaviour
 
         Caminar();
         Atacar(DireccionAtaque(direccionMovimiento, direccionRaw));
+        
+        if(enSuelo && !haciendoDash)
+        {
+            saltarDeMuro = false;
+        }
+
+        agarrarse = enMuro && Input.GetKey(KeyCode.LeftShift);
+
+        if (enMuro)
+        {
+            anim.SetBool("escalar", true);
+            if (rb.velocity == Vector2.zero)
+            {
+                anim.SetFloat("velocidad", 0);
+            }
+            else
+            {
+                anim.SetFloat("velocidad", 1);
+            }
+        }
+        else 
+        {
+            anim.SetBool("escalar", false);
+            anim.SetFloat("velocidad", 0);
+
+        }
+
+        if (agarrarse && !haciendoDash) 
+        {
+            rb.gravityScale = 0;
+            if (x > 0.2f || x < -0.2f) 
+            {
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+            }
+
+            float modificadorVelocidad = y > 0 ? 0.5f : 1;
+            rb.velocity = new Vector2(rb.velocity.x, y * (velocidadDeMovimiento * modificadorVelocidad));
+            
+            if(muroIzquierdo && transform.localScale.x > 0)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            }else if(muroDerecho && transform.localScale.x < 0)
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+
+        }
+        else
+        {
+            rb.gravityScale = 3;
+        }
+
+        if(enMuro && !enSuelo)
+        {
+            if(x != 0 && !agarrarse)
+            {
+                DeslizarPared();
+            }
+        }
+
 
         MejorarSalto();
         if (Input.GetKeyDown(KeyCode.Space))
@@ -176,6 +242,13 @@ public class PlayerController : MonoBehaviour
             {
                 anim.SetBool("saltar", true);
                 Saltar();
+            }
+
+            if(enMuro && !enSuelo)
+            {
+                anim.SetBool("escalar", false);
+                anim.SetBool("saltar", true);
+                SaltarDesdeMuro();
             }
         }
 
@@ -189,6 +262,8 @@ public class PlayerController : MonoBehaviour
 
         if (enSuelo && !tocadoPiso)
         {
+            anim.SetBool("escalar", false);
+
             TocarPiso();
             tocadoPiso = true;
         }
@@ -221,6 +296,44 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void DeslizarPared()
+    {
+        if(puedeMover)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, -velocidadDeslizar);
+        }
+    }
+
+    private void SaltarDesdeMuro()
+    {
+        StopCoroutine(DeshabilitarMovimiento(0));
+        StartCoroutine(DeshabilitarMovimiento(0.1f));
+
+        Vector2 direccionMuro = muroDerecho ? Vector2.left : Vector2.right;
+
+        if(direccion.x < 0 && transform.localScale.x > 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }else if (direccion.x > 0 && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+
+        anim.SetBool("saltar", true);
+        anim.SetBool("escalar", false);
+        Saltar((Vector2.up + direccionMuro), true);
+
+        saltarDeMuro = true;
+    }
+
+    private IEnumerator DeshabilitarMovimiento(float tiempo)
+    {
+        puedeMover = false;
+        yield return new WaitForSeconds(tiempo);
+        puedeMover = true;
+    }
+
+
     public void FinalizarSalto()
     {
         anim.SetBool("saltar", false);
@@ -241,6 +354,11 @@ public class PlayerController : MonoBehaviour
     private void Agarres()
     {
         enSuelo = Physics2D.OverlapCircle((Vector2)transform.position + abajo, radioDeColision, layerPiso);
+
+        muroDerecho = Physics2D.OverlapCircle((Vector2)transform.position + derecha, radioDeColision, layerPiso);
+        muroIzquierdo = Physics2D.OverlapCircle((Vector2)transform.position + izquierda, radioDeColision, layerPiso);
+
+        enMuro = muroDerecho || muroIzquierdo;
     }
 
     private void Saltar()
@@ -249,42 +367,56 @@ public class PlayerController : MonoBehaviour
         rb.velocity += Vector2.up * fuerzaDeSalto;
     }
 
+    private void Saltar(Vector2 direccionSalto, bool muro)
+    {
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.velocity += direccionSalto * fuerzaDeSalto;
+    }
+
     private void Caminar()
     {
         if (puedeMover && !haciendoDash)
         {
-            rb.velocity = new Vector2(direccion.x * velocidadDeMovimiento, rb.velocity.y);
-
-            if (direccion != Vector2.zero)
+            if(saltarDeMuro)
             {
-                if (!enSuelo)
-                {
-                    anim.SetBool("saltar", true);
-                }
-                else
-                {
-                    anim.SetBool("caminar", true);
-                }
-
-                if (direccion.x < 0 && transform.localScale.x > 0)
-                {
-                    direccionMovimiento = DireccionAtaque(Vector2.left, direccion);
-                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                }
-                else if (direccion.x > 0 && transform.localScale.x < 0)
-                {
-                    direccionMovimiento = DireccionAtaque(Vector2.right, direccion);
-                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-                }
+                rb.velocity = Vector2.Lerp(rb.velocity, (new Vector2(direccion.x * velocidadDeMovimiento, rb.velocity.y)), Time.deltaTime / 2);
             }
             else
             {
-                if(direccion.y > 0 && direccion.x ==0)
+                if (direccion != Vector2.zero && !agarrarse)
                 {
-                    direccionMovimiento = DireccionAtaque(direccion, Vector2.up);
+                    if (!enSuelo)
+                    {
+                        anim.SetBool("saltar", true);
+                    }
+                    else
+                    {
+                        anim.SetBool("caminar", true);
+                    }
+
+                    rb.velocity = (new Vector2(direccion.x * velocidadDeMovimiento, rb.velocity.y));
+                    if (direccion.x < 0 && transform.localScale.x > 0)
+                    {
+                        direccionMovimiento = DireccionAtaque(Vector2.left, direccion);
+                        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                    }
+                    else if (direccion.x > 0 && transform.localScale.x < 0)
+                    {
+                        direccionMovimiento = DireccionAtaque(Vector2.right, direccion);
+                        transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                    }
                 }
-                anim.SetBool("caminar", false);
+                else
+                {
+                    if (direccion.y > 0 && direccion.x == 0)
+                    {
+                        direccionMovimiento = DireccionAtaque(direccion, Vector2.up);
+                    }
+                    anim.SetBool("caminar", false);
+                }
             }
+
+            
         }
     }
 }

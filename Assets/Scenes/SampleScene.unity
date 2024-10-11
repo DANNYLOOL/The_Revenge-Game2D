@@ -1987,7 +1987,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 13
-      m_TileSpriteIndex: 13
+      m_TileSpriteIndex: 33
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -2137,7 +2137,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 14
-      m_TileSpriteIndex: 14
+      m_TileSpriteIndex: 29
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -2287,7 +2287,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 15
-      m_TileSpriteIndex: 15
+      m_TileSpriteIndex: 28
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -2990,12 +2990,12 @@ Tilemap:
     m_Data: {fileID: -493930909, guid: f5d47978d68f9ac418deebf97223cbd1, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: 1202255438, guid: f5d47978d68f9ac418deebf97223cbd1, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -294879280, guid: f5d47978d68f9ac418deebf97223cbd1, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -1381764031, guid: f5d47978d68f9ac418deebf97223cbd1, type: 3}
-  - m_RefCount: 1
-    m_Data: {fileID: -623855201, guid: f5d47978d68f9ac418deebf97223cbd1, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 2
     m_Data: {fileID: -1010078392, guid: 502dbeed538e25f4fbfe24ada3f300fc, type: 3}
   - m_RefCount: 0
@@ -3020,18 +3020,18 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: -623855201, guid: f5d47978d68f9ac418deebf97223cbd1, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: -1381764031, guid: f5d47978d68f9ac418deebf97223cbd1, type: 3}
   - m_RefCount: 4
     m_Data: {fileID: -1367839996, guid: 502dbeed538e25f4fbfe24ada3f300fc, type: 3}
   - m_RefCount: 4
     m_Data: {fileID: -567945871, guid: 502dbeed538e25f4fbfe24ada3f300fc, type: 3}
   - m_RefCount: 2
     m_Data: {fileID: -1227425479, guid: 502dbeed538e25f4fbfe24ada3f300fc, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: -294879280, guid: f5d47978d68f9ac418deebf97223cbd1, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 171
     m_Data:
@@ -4395,18 +4395,26 @@ MonoBehaviour:
   velocidadDeMovimiento: 10
   fuerzaDeSalto: 14
   velocidadDash: 20
+  velocidadDeslizar: 1.5
   layerPiso:
     serializedVersion: 2
     m_Bits: 64
   radioDeColision: 0.1
   abajo: {x: 0, y: -0.8}
+  derecha: {x: 0.6, y: 0}
+  izquierda: {x: -0.6, y: 0}
   puedeMover: 1
-  enSuelo: 1
+  enSuelo: 0
   puedeDash: 0
   haciendoDash: 0
   tocadoPiso: 0
   haciendoShake: 0
   estaAtacando: 0
+  enMuro: 0
+  muroDerecho: 0
+  muroIzquierdo: 0
+  agarrarse: 0
+  saltarDeMuro: 0
 --- !u!95 &1419749520
 Animator:
   serializedVersion: 5

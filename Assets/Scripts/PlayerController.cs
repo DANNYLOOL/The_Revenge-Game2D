@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 direccion;
     private CinemachineVirtualCamera cm;
     private Vector2 direccionMovimiento;
+    private bool bloqueado;
 
     [Header("Estadisticas")]
     public float velocidadDeMovimiento = 10;
@@ -22,7 +23,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask layerPiso;
     public float radioDeColision;
     public Vector2 abajo, derecha, izquierda;
-    
+
 
     [Header("Booleanos")]
     public bool puedeMover = true;
@@ -45,10 +46,15 @@ public class PlayerController : MonoBehaviour
         cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
     }
 
+    public void SetBloqueadoTrue()
+    {
+        bloqueado = true;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -71,13 +77,14 @@ public class PlayerController : MonoBehaviour
 
                 anim.SetBool("atacar", true);
 
-            }    
+            }
         }
     }
 
     public void FinalizarAtaque()
     {
         anim.SetBool("atacar", false);
+        bloqueado = false;
         estaAtacando = false;
     }
 
@@ -171,17 +178,18 @@ public class PlayerController : MonoBehaviour
 
         Caminar();
         Atacar(DireccionAtaque(direccionMovimiento, direccionRaw));
-        
-        if(enSuelo && !haciendoDash)
+
+        if (enSuelo && !haciendoDash)
         {
             saltarDeMuro = false;
         }
 
         agarrarse = enMuro && Input.GetKey(KeyCode.LeftShift);
 
-        if (enMuro)
+        if (agarrarse && !enSuelo)
         {
             anim.SetBool("escalar", true);
+
             if (rb.velocity == Vector2.zero)
             {
                 anim.SetFloat("velocidad", 0);
@@ -191,28 +199,36 @@ public class PlayerController : MonoBehaviour
                 anim.SetFloat("velocidad", 1);
             }
         }
-        else 
+        else
         {
             anim.SetBool("escalar", false);
             anim.SetFloat("velocidad", 0);
-
         }
 
-        if (agarrarse && !haciendoDash) 
+        if (agarrarse && !haciendoDash)
         {
             rb.gravityScale = 0;
-            if (x > 0.2f || x < -0.2f) 
+            if (x > 0.2f || x < -0.2f)
             {
                 rb.velocity = new Vector2(rb.velocity.x, 0);
             }
 
             float modificadorVelocidad = y > 0 ? 0.5f : 1;
             rb.velocity = new Vector2(rb.velocity.x, y * (velocidadDeMovimiento * modificadorVelocidad));
-            
-            if(muroIzquierdo && transform.localScale.x > 0)
+
+            if (y == 0)
+            {
+                anim.SetFloat("velocidad", 0); // Animación de agarre
+            }
+            else
+            {
+                anim.SetFloat("velocidad", 1); // Animación de escalado
+            }
+
+            if (muroIzquierdo && transform.localScale.x > 0)
             {
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            }else if(muroDerecho && transform.localScale.x < 0)
+            } else if (muroDerecho && transform.localScale.x < 0)
             {
                 transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
@@ -223,9 +239,11 @@ public class PlayerController : MonoBehaviour
             rb.gravityScale = 3;
         }
 
-        if(enMuro && !enSuelo)
+        if (enMuro && !enSuelo)
         {
-            if(x != 0 && !agarrarse)
+            anim.SetBool("escalar", true);
+
+            if (x != 0 && !agarrarse)
             {
                 DeslizarPared();
             }
@@ -241,7 +259,7 @@ public class PlayerController : MonoBehaviour
                 Saltar();
             }
 
-            if(enMuro && !enSuelo)
+            if (enMuro && !enSuelo)
             {
                 anim.SetBool("escalar", false);
                 anim.SetBool("saltar", true);
@@ -249,7 +267,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.X) && !haciendoDash)
+        if (Input.GetKeyDown(KeyCode.X) && !haciendoDash && !puedeDash)
         {
             if (xRaw != 0 || yRaw != 0)
             {
@@ -295,7 +313,7 @@ public class PlayerController : MonoBehaviour
 
     private void DeslizarPared()
     {
-        if(puedeMover)
+        if (puedeMover)
         {
             rb.velocity = new Vector2(rb.velocity.x, -velocidadDeslizar);
         }
@@ -308,10 +326,10 @@ public class PlayerController : MonoBehaviour
 
         Vector2 direccionMuro = muroDerecho ? Vector2.left : Vector2.right;
 
-        if(direccion.x < 0 && transform.localScale.x > 0)
+        if (direccionMuro.x < 0 && transform.localScale.x > 0)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        }else if (direccion.x > 0 && transform.localScale.x < 0)
+        } else if (direccionMuro.x > 0 && transform.localScale.x < 0)
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
@@ -372,7 +390,7 @@ public class PlayerController : MonoBehaviour
 
     private void Caminar()
     {
-        if (puedeMover && !haciendoDash)
+        if (puedeMover && !haciendoDash && !estaAtacando)
         {
             if(saltarDeMuro)
             {
@@ -413,7 +431,13 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            
+        }
+        else
+        {
+            if (bloqueado)
+            {
+                FinalizarAtaque();
+            }
         }
     }
 }

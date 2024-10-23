@@ -52,7 +52,7 @@ public class RippleEffect : MonoBehaviour
 
         public void Update()
         {
-            time += Time.deltaTime;
+            time += Time.deltaTime * 2;
         }
 
         public Vector4 MakeShaderParameter(float aspect)
@@ -109,7 +109,7 @@ public class RippleEffect : MonoBehaviour
     {
         if (dropInterval > 0)
         {
-            timer += Time.deltaTime;
+            timer += Time.deltaTime ;
             while (timer > dropInterval)
             {
                 timer -= dropInterval;

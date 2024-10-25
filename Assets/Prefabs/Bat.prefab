@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   velocidadDeMovimiento: 5
-  radioDeDeteccion: 12
+  radioDeDeteccion: 15
   layerJugador:
     serializedVersion: 2
     m_Bits: 64

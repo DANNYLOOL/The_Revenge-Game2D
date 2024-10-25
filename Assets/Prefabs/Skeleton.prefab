@@ -162,8 +162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c877ec52fbcde69479a956a2df81d282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanciaDeteccionJugador: 12
-  distanciaDeteccionFlecha: 9
+  distanciaDeteccionJugador: 15
+  distanciaDeteccionFlecha: 10
   flecha: {fileID: 3068263045977894442, guid: 6f7287e023ccb90468f4576d4919b66f, type: 3}
   fuerzaLanzamiento: 40
   velocidadMovimiento: 2

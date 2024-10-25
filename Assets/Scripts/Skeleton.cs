@@ -109,13 +109,26 @@ public class Skeleton : MonoBehaviour
 
     public void RecibirDaño()
     {
-        if (vidas > 0)
+        if (vidas > 1)
+        {
+            StartCoroutine(AgitarCamara(0.1f));
+            StartCoroutine(EfectoDaño());
+            aplicarFuerza = true;
+            vidas--;
+        }
+        else
         {
             StartCoroutine(EfectoDaño());
-            StartCoroutine(AgitarCamara(0.1f));
-            rb.velocity = Vector2.zero;
-            Destroy(this.gameObject, 0.2f);
+            aplicarFuerza = true;
+            StartCoroutine(DestruirConAgitacion());
         }
+        
+    }
+
+    private IEnumerator DestruirConAgitacion()
+    {
+        yield return StartCoroutine(AgitarCamara(0.1f));
+        Destroy(gameObject);
     }
 
     private IEnumerator AgitarCamara(float tiempo)
@@ -137,7 +150,7 @@ public class Skeleton : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //player.RecibirDaño((transform.position - player.transform.position).normalized);
+            player.RecibirDaño((transform.position - player.transform.position).normalized);
         }
     }
 

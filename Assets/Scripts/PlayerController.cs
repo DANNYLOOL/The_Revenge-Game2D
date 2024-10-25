@@ -11,13 +11,18 @@ public class PlayerController : MonoBehaviour
     private Vector2 direccion;
     private CinemachineVirtualCamera cm;
     private Vector2 direccionMovimiento;
+    private Vector2 direccionDaño;
     private bool bloqueado;
+    private GrayCamera gc;
+    private SpriteRenderer sprite;
 
     [Header("Estadisticas")]
     public float velocidadDeMovimiento = 10;
     public float fuerzaDeSalto = 5;
     public float velocidadDash = 20;
     public float velocidadDeslizar;
+    public int vidas = 3;
+    public float tiempoInmortalidad;
 
     [Header("Colisiones")]
     public LayerMask layerPiso;
@@ -38,12 +43,16 @@ public class PlayerController : MonoBehaviour
     public bool muroIzquierdo;
     public bool agarrarse;
     public bool saltarDeMuro;
+    public bool esInmortal;
+    public bool aplicarFuerza;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
+        gc = Camera.main.GetComponent<GrayCamera>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     public void SetBloqueadoTrue()
@@ -51,10 +60,91 @@ public class PlayerController : MonoBehaviour
         bloqueado = true;
     }
 
+    public void Morir()
+    {
+        if (vidas > 0)
+        {
+            return;
+        }
+        this.enabled = false;
+    }
+
+    public void RecibirDaño()
+    {
+        StartCoroutine(ImpactoDaño(Vector2.zero));
+    }
+
+    public void RecibirDaño(Vector2 direccionDaño)
+    {
+        StartCoroutine(ImpactoDaño(direccionDaño));
+    }
+
+    private IEnumerator ImpactoDaño(Vector2 direccionDaño)
+    {
+        if (!esInmortal)
+        {
+            StartCoroutine(Inmortalidad());
+            vidas--;
+            gc.enabled = true;
+            float velocidadAuxiliar = velocidadDeMovimiento;
+            this.direccionDaño = direccionDaño;
+            aplicarFuerza = true;
+            Time.timeScale = 0.4f;
+            FindObjectOfType<RippleEffect>().Emit(Camera.main.WorldToViewportPoint(transform.position));
+            StartCoroutine(AgitarCamara());
+            yield return new WaitForSeconds(0.2f);
+            Time.timeScale = 1;
+            gc.enabled = false;
+
+            for (int i = GameManager.instance.vidasUI.transform.childCount - 1; i >= 0; i--)
+            {
+                if (GameManager.instance.vidasUI.transform.GetChild(i).gameObject.activeInHierarchy)
+                {
+                    GameManager.instance.vidasUI.transform.GetChild(i).gameObject.SetActive(false);
+                    break;
+                }
+            }
+            velocidadDeMovimiento = velocidadAuxiliar;
+            Morir();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (aplicarFuerza)
+        {
+            velocidadDeMovimiento = 0;
+            rb.velocity = Vector2.zero;
+            rb.AddForce(-direccionDaño * 25, ForceMode2D.Impulse);
+            aplicarFuerza = false;
+        }
+    }
+
+    public void DarInmortalidad()
+    {
+        StartCoroutine(Inmortalidad());
+    }
+
+    private IEnumerator Inmortalidad()
+    {
+        esInmortal = true;
+        float tiempoTranscurrido = 0;
+
+        while (tiempoTranscurrido < tiempoInmortalidad)
+        {
+            sprite.color = new Color(1, 1, 1, 0.5f);
+            yield return new WaitForSeconds(tiempoInmortalidad / 20);
+            sprite.color = new Color(1, 1, 1, 1);
+            yield return new WaitForSeconds(tiempoInmortalidad / 20);
+            tiempoTranscurrido += tiempoInmortalidad / 10;
+        }
+        esInmortal = false;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame

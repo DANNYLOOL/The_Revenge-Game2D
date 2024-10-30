@@ -18,6 +18,10 @@ public class AreaAtaque : MonoBehaviour
             {
                 collision.GetComponent<Skeleton>().RecibirDaño();
             }
+            else if (collision.name == "Spider")
+            {
+                collision.GetComponent<Waypoints>().RecibirDaño();
+            }
         }
     }
 

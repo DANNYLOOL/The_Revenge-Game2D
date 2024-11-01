@@ -23,6 +23,10 @@ public class AreaAtaque : MonoBehaviour
                 collision.GetComponent<Waypoints>().RecibirDaño();
             }
         }
+        else if (collision.CompareTag("Destruible"))
+        {
+            collision.GetComponent<Animator>().SetBool("destruir", true);
+        }
     }
 
 }

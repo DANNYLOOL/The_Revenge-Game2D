@@ -10,11 +10,40 @@ public class Plataforma : MonoBehaviour
 
     public bool daSalto;
     public BoxCollider2D plataformaCollider;
+    public BoxCollider2D plataformaTrigger;
 
 
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+    }
+
+    private void Start()
+    {
+        if (!daSalto)
+        {
+            Physics2D.IgnoreCollision(plataformaCollider, plataformaTrigger, true);
+        }        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!daSalto)
+        {
+            Physics2D.IgnoreCollision(plataformaCollider, player.GetComponent<CapsuleCollider2D>(), true);
+
+        }
+
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (!daSalto)
+        {
+            Physics2D.IgnoreCollision(plataformaCollider, player.GetComponent<CapsuleCollider2D>(), false);
+
+        }
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

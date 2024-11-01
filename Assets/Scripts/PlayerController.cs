@@ -460,10 +460,24 @@ public class PlayerController : MonoBehaviour
     {
         enSuelo = Physics2D.OverlapCircle((Vector2)transform.position + abajo, radioDeColision, layerPiso);
 
+        Collider2D collisionDerecha = Physics2D.OverlapCircle((Vector2)transform.position + derecha, radioDeColision, layerPiso);
+        Collider2D collisionIzquierda = Physics2D.OverlapCircle((Vector2)transform.position + izquierda, radioDeColision, layerPiso);
+
+        if(collisionDerecha != null)
+        {
+            enMuro = !collisionDerecha.CompareTag("Plataforma");
+        }else if(collisionIzquierda != null)
+        {
+            enMuro = !collisionIzquierda.CompareTag("Plataforma");
+        }
+        else
+        {
+            enMuro=false;
+        }
+
+
         muroDerecho = Physics2D.OverlapCircle((Vector2)transform.position + derecha, radioDeColision, layerPiso);
         muroIzquierdo = Physics2D.OverlapCircle((Vector2)transform.position + izquierda, radioDeColision, layerPiso);
-
-        enMuro = muroDerecho || muroIzquierdo;
     }
 
     private void Saltar()

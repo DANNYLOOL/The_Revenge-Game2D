@@ -17,6 +17,10 @@ public class Waypoints : MonoBehaviour
     public Vector2 posicionCabeza;
     public float velocidadDesplazamiento;
     public List<Transform> puntos = new List<Transform>();
+    public bool esperando;
+    public float tiempoDeEspera;
+
+
     private void Awake()
     {
         cm = GameObject.FindGameObjectWithTag("VirtualCamera").GetComponent<CinemachineVirtualCamera>();
@@ -55,6 +59,20 @@ public class Waypoints : MonoBehaviour
             {
                 player.RecibirDaño(-(player.transform.position - transform.position).normalized);
             }
+        }else if (collision.gameObject.CompareTag("Player") && gameObject.CompareTag("Plataforma"))
+        {
+            if (player.transform.position.y - 0.7f > transform.position.y)
+            {
+                player.transform.parent = transform;
+            }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && gameObject.CompareTag("Plataforma"))
+        {
+            player.transform.parent = null;
         }
     }
 
@@ -74,18 +92,26 @@ public class Waypoints : MonoBehaviour
     {
         direccion = (puntos[indiceActual].position - transform.position).normalized;
 
-        transform.position = (Vector2.MoveTowards(transform.position, puntos[indiceActual].position, velocidadDesplazamiento * Time.deltaTime));
+        if (!esperando)
+        {
+            transform.position = (Vector2.MoveTowards(transform.position, puntos[indiceActual].position, velocidadDesplazamiento * Time.deltaTime));
+
+        }
 
         if (Vector2.Distance(transform.position, puntos[indiceActual].position) <= 0.7f)
         {
-            StartCoroutine(Esperar());
+            if (!esperando) 
+            {
+                StartCoroutine(Esperar());
+            }
         }
     }
 
     private IEnumerator Esperar()
     {
-        yield return null;
-
+        esperando = true;
+        yield return new WaitForSeconds(tiempoDeEspera);
+        esperando = false;
         indiceActual++;
 
         if (indiceActual >= puntos.Count)

@@ -8,6 +8,8 @@ TagManager:
   - Enemigo
   - Destruible
   - Plataforma
+  - Moneda
+  - PowerUp
   layers:
   - Default
   - TransparentFX

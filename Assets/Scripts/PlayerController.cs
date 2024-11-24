@@ -66,6 +66,7 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+        GameManager.instance.GameOver();
         this.enabled = false;
     }
 
@@ -96,16 +97,31 @@ public class PlayerController : MonoBehaviour
             Time.timeScale = 1;
             gc.enabled = false;
 
-            for (int i = GameManager.instance.vidasUI.transform.childCount - 1; i >= 0; i--)
+            ActualizarVidasUI(1);
+
+            velocidadDeMovimiento = velocidadAuxiliar;
+            Morir();
+        }
+    }
+
+    public void ActualizarVidasUI(int vidasADescontar)
+    {
+        int vidasDescontadas = vidasADescontar;
+
+        for (int i = GameManager.instance.vidasUI.transform.childCount - 1; i >= 0; i--)
+        {
+            if (GameManager.instance.vidasUI.transform.GetChild(i).gameObject.activeInHierarchy && vidasDescontadas != 0)
             {
-                if (GameManager.instance.vidasUI.transform.GetChild(i).gameObject.activeInHierarchy)
+                GameManager.instance.vidasUI.transform.GetChild(i).gameObject.SetActive(false);
+                vidasDescontadas--;
+            }
+            else
+            {
+                if (vidasDescontadas == 0)
                 {
-                    GameManager.instance.vidasUI.transform.GetChild(i).gameObject.SetActive(false);
                     break;
                 }
             }
-            velocidadDeMovimiento = velocidadAuxiliar;
-            Morir();
         }
     }
 

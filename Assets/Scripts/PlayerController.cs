@@ -6,6 +6,8 @@ using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
+    private int direccionX;
+
     private Rigidbody2D rb;
     private Animator anim;
     private Vector2 direccion;
@@ -45,6 +47,7 @@ public class PlayerController : MonoBehaviour
     public bool saltarDeMuro;
     public bool esInmortal;
     public bool aplicarFuerza;
+    public bool terminandoMapa;
 
     private void Awake()
     {
@@ -157,6 +160,22 @@ public class PlayerController : MonoBehaviour
         esInmortal = false;
     }
 
+    public void MovimientoFinalMapa(int direccionX)
+    {
+        terminandoMapa = true;
+        this.direccionX = direccionX;
+        anim.SetBool("caminar", true);
+
+        if(this.direccionX < 0 && transform.localScale.x > 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+        else if(this.direccionX > 0 && transform.localScale.x < 0)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -166,8 +185,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movimiento();
-        Agarres();
+        if (!terminandoMapa)
+        {
+            Movimiento();
+            Agarres();
+        }
+        else
+        {
+            rb.velocity = (new Vector2(direccionX * velocidadDeMovimiento, rb.velocity.y));
+
+        }
+
     }
 
     private void Atacar(Vector2 direccion)

@@ -19,6 +19,12 @@ public class GameManager : MonoBehaviour
     public GameObject panelGameOver;
     public GameObject panelCarga;
 
+    public bool avanzandoNivel;
+    public int nivelActual;
+    public List<Transform> posicionesAvance = new List<Transform>();
+    public List<Transform> posicionesRetroceder = new List<Transform>();
+    public GameObject panelTransicion;
+
     private void Awake()
     {
         if (instance == null)
@@ -33,6 +39,39 @@ public class GameManager : MonoBehaviour
         if (PlayerPrefs.GetInt("vidas") != 0)
         {
             CargarPartida();
+        }
+    }
+
+    public void ActivarPanelTransicion()
+    {
+        panelTransicion.GetComponent<Animator>().SetTrigger("ocultar");
+    }
+
+
+
+    public void CambiarPosicionJugador()
+    {
+        if (avanzandoNivel)
+        {
+            if (nivelActual + 1 < posicionesAvance.Count)
+            {
+                player.transform.position = posicionesAvance[nivelActual + 1].transform.position;
+                player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                player.GetComponent<Animator>().SetBool("caminar", false);
+                player.terminandoMapa = false;
+            }
+            else
+            {
+                if (posicionesRetroceder.Count < nivelActual -1)
+                {
+                    player.transform.position = posicionesRetroceder[nivelActual - 1].transform.position;
+                    player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                    player.GetComponent<Animator>().SetBool("caminar", false);
+                    player.terminandoMapa = false;
+
+
+                }
+            }
         }
     }
 

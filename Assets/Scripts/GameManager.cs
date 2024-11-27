@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
     private bool ejecutando;
+    private bool cargandoNivel;
+    private int indiceNivelInicio;
 
     public static GameManager instance;
     public GameObject vidasUI;
@@ -19,10 +22,13 @@ public class GameManager : MonoBehaviour
     public GameObject panelGameOver;
     public GameObject panelCarga;
 
+    public CinemachineConfiner cinemachineConfiner;
+
     public bool avanzandoNivel;
     public int nivelActual;
     public List<Transform> posicionesAvance = new List<Transform>();
     public List<Transform> posicionesRetroceder = new List<Transform>();
+    public List<Collider2D> areasCamara = new List<Collider2D>();
     public GameObject panelTransicion;
 
     private void Awake()
@@ -36,9 +42,23 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        if (PlayerPrefs.GetInt("vidas") != 0)
+        //if (PlayerPrefs.GetInt("vidas") != 0)
+        //{
+        //    CargarPartida();
+        //}
+    }
+
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name == "Nivel1")
         {
-            CargarPartida();
+            nivelActual = PlayerPrefs.GetInt("IndiceNivelInicio");
+            indiceNivelInicio = PlayerPrefs.GetInt("IndiceNivelInicio");
+            PosicionInicialJugador(indiceNivelInicio);
+            //cinemachineConfiner.m_BoundingShape2D = areasCamara[indiceNivelInicio];
+        }else if (SceneManager.GetActiveScene().name == "LevelSelect")
+        {
+            PosicionInicialJugador(0);
         }
     }
 
@@ -47,7 +67,17 @@ public class GameManager : MonoBehaviour
         panelTransicion.GetComponent<Animator>().SetTrigger("ocultar");
     }
 
+    private void PosicionInicialJugador(int indiceNivelInicio)
+    {
+        player.transform.position = posicionesAvance[indiceNivelInicio].transform.position;
+    
+    }
 
+    public void SetindiceNivelInicio(int indiceNivelInicio)
+    {
+        this.indiceNivelInicio = indiceNivelInicio;
+        PlayerPrefs.SetInt("indiceNivelInicio", indiceNivelInicio);
+    }
 
     public void CambiarPosicionJugador()
     {
@@ -56,15 +86,17 @@ public class GameManager : MonoBehaviour
             if (nivelActual + 1 < posicionesAvance.Count)
             {
                 player.transform.position = posicionesAvance[nivelActual + 1].transform.position;
+                //cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual + 1];
                 player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 player.GetComponent<Animator>().SetBool("caminar", false);
                 player.terminandoMapa = false;
             }
             else
             {
-                if (posicionesRetroceder.Count < nivelActual -1)
+                if (posicionesRetroceder.Count > nivelActual -1)
                 {
                     player.transform.position = posicionesRetroceder[nivelActual - 1].transform.position;
+                    //cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual - 1];
                     player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                     player.GetComponent<Animator>().SetBool("caminar", false);
                     player.terminandoMapa = false;
@@ -82,11 +114,14 @@ public class GameManager : MonoBehaviour
         y = player.transform.position.y;
 
         int vidas = player.vidas;
+        int nombreEscena = nivelActual;
 
         PlayerPrefs.SetInt("monedas", monedas);
         PlayerPrefs.SetFloat("x", x);
         PlayerPrefs.SetFloat("y", y);
         PlayerPrefs.SetInt("vidas", vidas);
+        PlayerPrefs.SetInt("nivel", nombreEscena);
+        PlayerPrefs.SetInt("indiceNivelInicio", indiceNivelInicio);
 
         if (!ejecutando)
         {
@@ -103,15 +138,24 @@ public class GameManager : MonoBehaviour
         ejecutando = false;
     }
 
+    public void CargarNivel(string nombreNivel)
+    {
+        SceneManager.LoadScene(nombreNivel);
+    }
+
     public void CargarPartida()
     {
         monedas = PlayerPrefs.GetInt("monedas");
         player.transform.position = new Vector2(PlayerPrefs.GetFloat("x"), PlayerPrefs.GetFloat("y"));
         player.vidas = PlayerPrefs.GetInt("vidas");
         textoMonedas.text = monedas.ToString();
+        nivelActual = PlayerPrefs.GetInt("nivel");
+        //cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual];
+        indiceNivelInicio = PlayerPrefs.GetInt("IndiceNivelInicio");
 
         int vidasADescontar = 3 - player.vidas;
 
+        player.MostrarVidasUI();
         player.ActualizarVidasUI(vidasADescontar);
     }
 
@@ -147,12 +191,36 @@ public class GameManager : MonoBehaviour
 
     public void CargarEscena(string escenaACargar)
     {
-        SceneManager.LoadScene(escenaACargar);
+        StartCoroutine(CargarEscenaCorrutine(escenaACargar));
+    }
+
+    public IEnumerator CargarEscenaCorrutine(string escenaACargar)
+    {
+        cargandoNivel = true;
+        panelCarga.SetActive(true);
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("escenaACargar");
+
+        //Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            //yield return new WaitForSeconds(1);
+            yield return null;
+        }
+        //PosicionInicialJugador(indiceNivelInicio);
+        cargandoNivel = false;
     }
 
     public void GameOver()
     {
         panelGameOver.SetActive(true);
+        if (PlayerPrefs.GetFloat("x") != 0.0f)
+        {
+            player.enabled = true;
+            CargarPartida();
+            panelGameOver.SetActive(false);
+
+        }
     }
 
     public void SalirDelJuego()

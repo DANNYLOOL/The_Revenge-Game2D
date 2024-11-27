@@ -18,6 +18,7 @@ public class Interactuable : MonoBehaviour
     public bool esPalanca;
     public bool palancaAccionada;
     public bool esCheckpoint;
+    public bool esSelector;
 
     private void Awake()
     {
@@ -79,6 +80,15 @@ public class Interactuable : MonoBehaviour
         }
     }
 
+    private void SeleccionarNivel()
+    {
+        if (esSelector)
+        {
+            evento.Invoke();
+        }
+
+    }
+
     private void Update()
     {
         if (puedeInteractuar && Input.GetKeyDown(KeyCode.C))
@@ -86,6 +96,7 @@ public class Interactuable : MonoBehaviour
             Cofre();
             Palanca();
             Checkpoint();
+            SeleccionarNivel();
         }
     }
 }

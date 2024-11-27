@@ -82,11 +82,13 @@ public class GameManager : MonoBehaviour
         y = player.transform.position.y;
 
         int vidas = player.vidas;
+        string nombreEscena = SceneManager.GetActiveScene().name;
 
         PlayerPrefs.SetInt("monedas", monedas);
         PlayerPrefs.SetFloat("x", x);
         PlayerPrefs.SetFloat("y", y);
         PlayerPrefs.SetInt("vidas", vidas);
+        PlayerPrefs.SetString("nombreEscena", nombreEscena);
 
         if (!ejecutando)
         {
@@ -103,12 +105,25 @@ public class GameManager : MonoBehaviour
         ejecutando = false;
     }
 
+    public void CargarNivel(string nombreNivel)
+    {
+        SceneManager.LoadScene(nombreNivel);
+    }
+
     public void CargarPartida()
     {
         monedas = PlayerPrefs.GetInt("monedas");
         player.transform.position = new Vector2(PlayerPrefs.GetFloat("x"), PlayerPrefs.GetFloat("y"));
         player.vidas = PlayerPrefs.GetInt("vidas");
         textoMonedas.text = monedas.ToString();
+        //if(PlayerPrefs.GetString("nombreEscena") == string.Empty)
+        //{
+        //    SceneManager.LoadScene("LevelSelect");
+        //}
+        //else
+        //{
+        //    SceneManager.LoadScene(PlayerPrefs.GetString("nombreEscena"));
+        //}
 
         int vidasADescontar = 3 - player.vidas;
 

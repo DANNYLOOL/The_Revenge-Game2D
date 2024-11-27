@@ -298,8 +298,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidadDeMovimiento: 10
   fuerzaDeSalto: 14
-  velocidadDash: 25
-  velocidadDeslizar: 1.5
+  velocidadDash: 23
+  velocidadDeslizar: 5
+  vidas: 3
+  tiempoInmortalidad: 3
   layerPiso:
     serializedVersion: 2
     m_Bits: 64
@@ -319,6 +321,9 @@ MonoBehaviour:
   muroIzquierdo: 0
   agarrarse: 0
   saltarDeMuro: 0
+  esInmortal: 0
+  aplicarFuerza: 0
+  terminandoMapa: 0
 --- !u!95 &8671063326883490370
 Animator:
   serializedVersion: 5

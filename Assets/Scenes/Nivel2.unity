@@ -293,44 +293,8 @@ PrefabInstance:
       value: Nivel1
       objectReference: {fileID: 0}
     - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: esSelector
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: esCheckpoint
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
       propertyPath: evento.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1605773432}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CargarNivel
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Nivel1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5962816658769651318, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4327,7 +4291,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: nivel1
+          m_StringArgument: Nivel2
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &579577304
@@ -5061,44 +5025,8 @@ PrefabInstance:
       value: Nivel3
       objectReference: {fileID: 0}
     - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: esSelector
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: esCheckpoint
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
       propertyPath: evento.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1605773432}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CargarNivel
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Nivel1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5962816658769651318, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5856,44 +5784,8 @@ PrefabInstance:
       value: Nivel2
       objectReference: {fileID: 0}
     - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: esSelector
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: esCheckpoint
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
       propertyPath: evento.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1605773432}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CargarNivel
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Nivel1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2061797861386132593, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
-      propertyPath: evento.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5962816658769651318, guid: e9ecd7bc750ca664e8544e78412b313e, type: 3}
       propertyPath: m_LocalPosition.x

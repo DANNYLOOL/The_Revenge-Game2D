@@ -98,7 +98,7 @@ public class Bat : MonoBehaviour
     public void RecibirDaño()
     {
         StartCoroutine(AgitarCamara(0.1f));
-        if (vidas > 1)
+        if (vidas >= 1)
         {
             StartCoroutine(EfectoDaño());
             aplicarFuerza = true;
@@ -106,11 +106,16 @@ public class Bat : MonoBehaviour
         }
         else
         {
-            StartCoroutine(EfectoDaño());
-            aplicarFuerza = true;
+
+        }
+    }
+
+    private void Morir()
+    {
+        if (vidas <= 0)
+        {
             Destroy(gameObject, 0.2f);
         }
-        
     }
 
     private IEnumerator AgitarCamara(float tiempo)
@@ -119,6 +124,7 @@ public class Bat : MonoBehaviour
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 5;
         yield return new WaitForSeconds(tiempo);
         cinemachineBasicMultiChannelPerlin.m_AmplitudeGain = 0;
+        Morir();
     }
 
     private IEnumerator EfectoDaño()

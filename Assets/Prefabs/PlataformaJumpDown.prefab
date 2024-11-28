@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4247958005715872575
+--- !u!1 &8664495577038756117
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5397988508587444746}
-  - component: {fileID: 5121640192903008784}
-  - component: {fileID: 3150321097048789439}
-  - component: {fileID: 7245897804016328570}
-  - component: {fileID: 7313217111551492046}
+  - component: {fileID: 3438951762034119692}
+  - component: {fileID: 3804490282029152892}
+  - component: {fileID: 4682750412101933975}
+  - component: {fileID: 5990582147964523707}
+  - component: {fileID: 8980773679452330228}
   m_Layer: 6
   m_Name: PlataformaJumpDown
   m_TagString: Plataforma
@@ -20,13 +20,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5397988508587444746
+--- !u!4 &3438951762034119692
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4247958005715872575}
+  m_GameObject: {fileID: 8664495577038756117}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 16.27, y: 2.35, z: 0}
@@ -35,13 +35,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5121640192903008784
+--- !u!212 &3804490282029152892
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4247958005715872575}
+  m_GameObject: {fileID: 8664495577038756117}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -87,28 +87,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3150321097048789439
+--- !u!114 &4682750412101933975
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4247958005715872575}
+  m_GameObject: {fileID: 8664495577038756117}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cd848a968859e7498e9c1c6cc36a7dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   daSalto: 0
-  plataformaCollider: {fileID: 7245897804016328570}
-  plataformaTrigger: {fileID: 7313217111551492046}
---- !u!61 &7245897804016328570
+  plataformaCollider: {fileID: 5990582147964523707}
+  plataformaTrigger: {fileID: 8980773679452330228}
+--- !u!61 &5990582147964523707
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4247958005715872575}
+  m_GameObject: {fileID: 8664495577038756117}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -147,13 +147,13 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.9704247, y: 0.54957557}
   m_EdgeRadius: 0
---- !u!61 &7313217111551492046
+--- !u!61 &8980773679452330228
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4247958005715872575}
+  m_GameObject: {fileID: 8664495577038756117}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}

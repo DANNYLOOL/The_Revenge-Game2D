@@ -163,7 +163,7 @@ Transform:
   m_GameObject: {fileID: 7433436536454261497}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.196231, z: 0}
+  m_LocalPosition: {x: 0.04, y: -1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -298,10 +298,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidadDeMovimiento: 10
   fuerzaDeSalto: 14
-  velocidadDash: 23
-  velocidadDeslizar: 5
+  velocidadDash: 25
+  velocidadDeslizar: 1.5
   vidas: 3
-  tiempoInmortalidad: 3
+  tiempoInmortalidad: 0
   layerPiso:
     serializedVersion: 2
     m_Bits: 64

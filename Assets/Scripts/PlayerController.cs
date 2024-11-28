@@ -6,6 +6,8 @@ using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
+    private GameObject ultimoEnemigo;
+
     private int direccionX;
 
     private Rigidbody2D rb;
@@ -107,6 +109,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void MostrarVidasUI()
+    {
+        for (int i = 0; i < GameManager.instance.vidasUI.transform.childCount; i++)
+        {
+            GameManager.instance.vidasUI.transform.GetChild(i).gameObject.SetActive(true);
+        }
+    }
+
     public void ActualizarVidasUI(int vidasADescontar)
     {
         int vidasDescontadas = vidasADescontar;
@@ -196,6 +206,23 @@ public class PlayerController : MonoBehaviour
 
         }
 
+        if (!esInmortal && ultimoEnemigo != null)
+        {
+            Physics2D.IgnoreCollision(ultimoEnemigo.GetComponent<Collider2D>(), GetComponent<Collider2D>(), false);
+            ultimoEnemigo = null;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemigo"))
+        {
+            if (!esInmortal)
+            {
+                ultimoEnemigo = collision.gameObject;
+                Physics2D.IgnoreCollision(ultimoEnemigo.GetComponent<Collider2D>(), GetComponent<Collider2D>(), true);
+            }
+        }
     }
 
     private void Atacar(Vector2 direccion)

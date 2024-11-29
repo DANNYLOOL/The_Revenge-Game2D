@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2fdcf1c7b6d2a284fa629581130c92a8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - nivel1Sound: {fileID: 8300000, guid: 05520289ca3de2c47bc887833759fb15, type: 3}
+  - nivel2Sound: {fileID: 8300000, guid: 659555157478b8142b136be34e5f0cc7, type: 3}
+  - nivel3Sound: {fileID: 8300000, guid: 597195ca8a6b7b943bef726c8c7871e6, type: 3}
+  - nivel4Sound: {fileID: 8300000, guid: 1015e56d5807b25429a346ebf72a156c, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

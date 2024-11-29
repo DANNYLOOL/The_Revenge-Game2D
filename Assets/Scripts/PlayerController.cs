@@ -8,7 +8,10 @@ public class PlayerController : MonoBehaviour
 {
     private GameObject ultimoEnemigo;
 
+    public LevelManager levelManager;  // Referencia al LevelManager
     private int direccionX;
+    private int currentLevel = 1;      // Nivel actual del jugador (por ejemplo, 1)
+
 
     private Rigidbody2D rb;
     private Animator anim;
@@ -183,6 +186,17 @@ public class PlayerController : MonoBehaviour
         else if(this.direccionX > 0 && transform.localScale.x < 0)
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+
+        if (terminandoMapa)
+        {
+            // Calculamos el siguiente nivel basándonos en el nivel actual
+            currentLevel++;
+
+            // Llamamos al LevelManager para cargar el siguiente nivel y cambiar el sonido
+            levelManager.LoadLevel(currentLevel);  // Cambia el nivel dinámicamente
+
+            terminandoMapa = false;  // Reseteamos la bandera para evitar que se llame varias veces
         }
     }
 

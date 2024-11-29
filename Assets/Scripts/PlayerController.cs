@@ -187,17 +187,6 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-
-        if (terminandoMapa)
-        {
-            // Calculamos el siguiente nivel basándonos en el nivel actual
-            currentLevel++;
-
-            // Llamamos al LevelManager para cargar el siguiente nivel y cambiar el sonido
-            levelManager.LoadLevel(currentLevel);  // Cambia el nivel dinámicamente
-
-            terminandoMapa = false;  // Reseteamos la bandera para evitar que se llame varias veces
-        }
     }
 
     // Start is called before the first frame update

@@ -17,10 +17,12 @@ public class GameManager : MonoBehaviour
     public Text textoMonedas;
     public int monedas;
     public Text guardarPartidaTexto;
+    public static event System.Action<int> OnNivelCambio;
 
     public GameObject panelPausa;
     public GameObject panelGameOver;
     public GameObject panelCarga;
+    public GameObject panelInstrucciones;
 
     public CinemachineConfiner2D cinemachineConfiner;
 
@@ -65,6 +67,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void MostrarInstrucciones()
+    {
+        panelPausa.SetActive(false);
+        panelInstrucciones.SetActive(true);
+    }
+
+    public void CerrarInstrucciones()
+    {
+        panelInstrucciones.SetActive(false);
+        panelPausa.SetActive(true);
+    }
+
     public void ActivarPanelTransicion()
     {
         panelTransicion.GetComponent<Animator>().SetTrigger("ocultar");
@@ -79,6 +93,8 @@ public class GameManager : MonoBehaviour
     {
         this.indiceNivelInicio = indiceNivelInicio;
         PlayerPrefs.SetInt("indiceNivelInicio", indiceNivelInicio);
+
+        OnNivelCambio?.Invoke(indiceNivelInicio);
     }
 
     public void CambiarPosicionJugador()

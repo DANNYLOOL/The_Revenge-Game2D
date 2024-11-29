@@ -86,7 +86,6 @@ public class Interactuable : MonoBehaviour
         {
             evento.Invoke();
         }
-
     }
 
     private void Update()

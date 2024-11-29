@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public GameObject panelGameOver;
     public GameObject panelCarga;
 
-    public CinemachineConfiner cinemachineConfiner;
+    public CinemachineConfiner2D cinemachineConfiner;
 
     public bool avanzandoNivel;
     public int nivelActual;
@@ -52,13 +52,16 @@ public class GameManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Nivel1")
         {
-            nivelActual = PlayerPrefs.GetInt("IndiceNivelInicio");
-            indiceNivelInicio = PlayerPrefs.GetInt("IndiceNivelInicio");
+            nivelActual = PlayerPrefs.GetInt("indiceNivelInicio");
+            indiceNivelInicio = PlayerPrefs.GetInt("indiceNivelInicio");
             PosicionInicialJugador(indiceNivelInicio);
-            //cinemachineConfiner.m_BoundingShape2D = areasCamara[indiceNivelInicio];
-        }else if (SceneManager.GetActiveScene().name == "LevelSelect")
+            cinemachineConfiner.m_BoundingShape2D = areasCamara[indiceNivelInicio];
+        }
+        else
         {
-            PosicionInicialJugador(0);
+            if (SceneManager.GetActiveScene().name == "LevelSelect"){
+                PosicionInicialJugador(0);
+            }
         }
     }
 
@@ -69,11 +72,10 @@ public class GameManager : MonoBehaviour
 
     private void PosicionInicialJugador(int indiceNivelInicio)
     {
-        player.transform.position = posicionesAvance[indiceNivelInicio].transform.position;
-    
+        player.transform.position = posicionesAvance[indiceNivelInicio].transform.position; 
     }
 
-    public void SetindiceNivelInicio(int indiceNivelInicio)
+    public void SetIndiceNivelInicio(int indiceNivelInicio)
     {
         this.indiceNivelInicio = indiceNivelInicio;
         PlayerPrefs.SetInt("indiceNivelInicio", indiceNivelInicio);
@@ -83,29 +85,30 @@ public class GameManager : MonoBehaviour
     {
         if (avanzandoNivel)
         {
+            // Avanzar al siguiente nivel
             if (nivelActual + 1 < posicionesAvance.Count)
             {
                 player.transform.position = posicionesAvance[nivelActual + 1].transform.position;
-                //cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual + 1];
+                cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual + 1];
                 player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 player.GetComponent<Animator>().SetBool("caminar", false);
                 player.terminandoMapa = false;
             }
-            else
+        }
+        else
+        {
+            // Retroceder al nivel anterior
+            if (posicionesRetroceder.Count > nivelActual - 1)
             {
-                if (posicionesRetroceder.Count > nivelActual -1)
-                {
-                    player.transform.position = posicionesRetroceder[nivelActual - 1].transform.position;
-                    //cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual - 1];
-                    player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                    player.GetComponent<Animator>().SetBool("caminar", false);
-                    player.terminandoMapa = false;
-
-
-                }
+                player.transform.position = posicionesRetroceder[nivelActual - 1].transform.position;
+                cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual - 1];
+                player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                player.GetComponent<Animator>().SetBool("caminar", false);
+                player.terminandoMapa = false;
             }
         }
     }
+
 
     public void GuardarPartida()
     {
@@ -150,8 +153,9 @@ public class GameManager : MonoBehaviour
         player.vidas = PlayerPrefs.GetInt("vidas");
         textoMonedas.text = monedas.ToString();
         nivelActual = PlayerPrefs.GetInt("nivel");
-        //cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual];
-        indiceNivelInicio = PlayerPrefs.GetInt("IndiceNivelInicio");
+        cinemachineConfiner.m_BoundingShape2D = areasCamara[nivelActual];
+        indiceNivelInicio = PlayerPrefs.GetInt("indiceNivelInicio");
+
 
         int vidasADescontar = 3 - player.vidas;
 
@@ -191,15 +195,15 @@ public class GameManager : MonoBehaviour
 
     public void CargarEscena(string escenaACargar)
     {
-        StartCoroutine(CargarEscenaCorrutine(escenaACargar));
+        StartCoroutine(CargarEscenaCortina(escenaACargar));
     }
 
-    public IEnumerator CargarEscenaCorrutine(string escenaACargar)
+    public IEnumerator CargarEscenaCortina(string escenaACargar)
     {
         cargandoNivel = true;
         panelCarga.SetActive(true);
 
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("escenaACargar");
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(escenaACargar);
 
         //Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
@@ -214,12 +218,15 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         panelGameOver.SetActive(true);
+    }
+
+    public void ContinuarJuego()
+    {
         if (PlayerPrefs.GetFloat("x") != 0.0f)
         {
             player.enabled = true;
             CargarPartida();
             panelGameOver.SetActive(false);
-
         }
     }
 

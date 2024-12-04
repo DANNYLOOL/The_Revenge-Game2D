@@ -296,8 +296,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e60f265f85f81ab43ad3f908a52b4935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelManager: {fileID: 0}
   velocidadDeMovimiento: 10
-  fuerzaDeSalto: 14
+  fuerzaDeSalto: 16
   velocidadDash: 25
   velocidadDeslizar: 1.5
   vidas: 3

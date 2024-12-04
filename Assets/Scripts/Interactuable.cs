@@ -8,7 +8,7 @@ public class Interactuable : MonoBehaviour
     private bool puedeInteractuar;
     private BoxCollider2D bc;
     private SpriteRenderer sp;
-    private GameObject indicadorInteractuable;
+    public GameObject indicadorInteractuable;
     private Animator anim;
 
     public UnityEvent evento;
@@ -19,6 +19,7 @@ public class Interactuable : MonoBehaviour
     public bool palancaAccionada;
     public bool esCheckpoint;
     public bool esSelector;
+    public bool estaInteractuando;
 
     private void Awake()
     {
@@ -91,6 +92,14 @@ public class Interactuable : MonoBehaviour
     private void Update()
     {
         if (puedeInteractuar && Input.GetKeyDown(KeyCode.C))
+        {
+            OnInteractuarButtonPressed();
+        }
+    }
+
+    public void OnInteractuarButtonPressed()
+    {
+        if (puedeInteractuar)
         {
             Cofre();
             Palanca();

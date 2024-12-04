@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     public Text textoMonedas;
     public int monedas;
     public Text guardarPartidaTexto;
-    public static event System.Action<int> OnNivelCambio;
 
     public GameObject panelPausa;
     public GameObject panelGameOver;
@@ -93,8 +92,6 @@ public class GameManager : MonoBehaviour
     {
         this.indiceNivelInicio = indiceNivelInicio;
         PlayerPrefs.SetInt("indiceNivelInicio", indiceNivelInicio);
-
-        OnNivelCambio?.Invoke(indiceNivelInicio);
     }
 
     public void CambiarPosicionJugador()

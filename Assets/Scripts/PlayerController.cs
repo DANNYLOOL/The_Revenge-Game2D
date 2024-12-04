@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 using Cinemachine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
     public bool esInmortal;
     public bool aplicarFuerza;
     public bool terminandoMapa;
+    private bool estaAgarrado = false;
 
     private void Awake()
     {
@@ -615,6 +617,118 @@ public class PlayerController : MonoBehaviour
             if (bloqueado)
             {
                 FinalizarAtaque();
+            }
+        }
+    }
+
+    public void OnAttackButtonPressed()
+    {
+        if (!estaAtacando && !haciendoDash)
+        {
+            estaAtacando = true;
+            anim.SetFloat("ataqueX", direccion.x);
+            anim.SetFloat("ataqueY", direccion.y);
+            anim.SetBool("atacar", true);
+        }
+    }
+
+    public void OnDashButtonPressed()
+    {
+        float xRaw = Input.GetAxisRaw("Horizontal");
+        float yRaw = Input.GetAxisRaw("Vertical");
+
+        if (!haciendoDash && !puedeDash)
+        {
+            if (xRaw != 0 || yRaw != 0)
+            {
+                Dash(xRaw, yRaw);
+            }
+        }
+    }
+
+    public void OnJumpButtonPressed()
+    {
+        if (rb.velocity.y < 0)
+        {
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (2.5f - 1) * Time.deltaTime;
+        }
+        else if (rb.velocity.y > 0)
+        {
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (2.0f - 1) * Time.deltaTime;
+        }
+        if (enSuelo)
+        {
+            anim.SetBool("saltar", true);
+            Saltar();
+        }
+
+        if (enMuro && !enSuelo)
+        {
+            anim.SetBool("escalar", false);
+            anim.SetBool("saltar", true);
+            SaltarDesdeMuro();
+        }
+    }
+
+    public void OnClimbButtonPressed()
+    {
+        // Alternar el estado de "estaAgarrado"
+        estaAgarrado = !estaAgarrado;
+
+        if (estaAgarrado && enMuro && !enSuelo)
+        {
+            // Lógica para agarrarse a la pared
+            anim.SetBool("escalar", true);
+
+            if (rb.velocity == Vector2.zero)
+            {
+                anim.SetFloat("velocidad", 0);
+            }
+            else
+            {
+                anim.SetFloat("velocidad", 1);
+            }
+
+            rb.gravityScale = 0;
+            float x = Input.GetAxis("Horizontal");
+            float y = Input.GetAxis("Vertical");
+
+            if (x > 0.2f || x < -0.2f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, 0);
+            }
+
+            float modificadorVelocidad = y > 0 ? 0.5f : 1;
+            rb.velocity = new Vector2(rb.velocity.x, y * (velocidadDeMovimiento * modificadorVelocidad));
+
+            if (y == 0)
+            {
+                anim.SetFloat("velocidad", 0); // Animación de agarre
+            }
+            else
+            {
+                anim.SetFloat("velocidad", 1); // Animación de escalado
+            }
+
+            if (muroIzquierdo && transform.localScale.x > 0)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            }
+            else if (muroDerecho && transform.localScale.x < 0)
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+        }
+        else
+        {
+            // Lógica para soltarse de la pared
+            anim.SetBool("escalar", false);
+            anim.SetFloat("velocidad", 0);
+            rb.gravityScale = 3;
+
+            if (enMuro && !enSuelo && Input.GetAxis("Horizontal") != 0)
+            {
+                DeslizarPared();
             }
         }
     }

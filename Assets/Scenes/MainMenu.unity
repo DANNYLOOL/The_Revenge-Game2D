@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &24727489
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1442,6 +1442,7 @@ MonoBehaviour:
   panelPausa: {fileID: 0}
   panelGameOver: {fileID: 0}
   panelCarga: {fileID: 350003561}
+  panelInstrucciones: {fileID: 0}
   cinemachineConfiner: {fileID: 0}
   avanzandoNivel: 0
   nivelActual: 0

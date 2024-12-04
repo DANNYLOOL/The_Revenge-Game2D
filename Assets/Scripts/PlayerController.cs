@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     private GameObject ultimoEnemigo;
+    public Joystick joystick;
 
     public LevelManager levelManager;  // Referencia al LevelManager
     private int direccionX;
@@ -54,7 +55,6 @@ public class PlayerController : MonoBehaviour
     public bool esInmortal;
     public bool aplicarFuerza;
     public bool terminandoMapa;
-    private bool estaAgarrado = false;
 
     private void Awake()
     {
@@ -333,11 +333,11 @@ public class PlayerController : MonoBehaviour
 
     private void Movimiento()
     {
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
+        float x = joystick.Horizontal;
+        float y = joystick.Vertical;
 
-        float xRaw = Input.GetAxisRaw("Horizontal");
-        float yRaw = Input.GetAxisRaw("Vertical");
+        float xRaw = joystick.Horizontal;
+        float yRaw = joystick.Vertical;
 
         direccion = new Vector2(x, y);
         Vector2 direccionRaw = new Vector2(xRaw, yRaw);
@@ -634,8 +634,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnDashButtonPressed()
     {
-        float xRaw = Input.GetAxisRaw("Horizontal");
-        float yRaw = Input.GetAxisRaw("Vertical");
+        float xRaw = joystick.Horizontal;
+        float yRaw = joystick.Vertical;
 
         if (!haciendoDash && !puedeDash)
         {
@@ -667,69 +667,6 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("escalar", false);
             anim.SetBool("saltar", true);
             SaltarDesdeMuro();
-        }
-    }
-
-    public void OnClimbButtonPressed()
-    {
-        // Alternar el estado de "estaAgarrado"
-        estaAgarrado = !estaAgarrado;
-
-        if (estaAgarrado && enMuro && !enSuelo)
-        {
-            // Lógica para agarrarse a la pared
-            anim.SetBool("escalar", true);
-
-            if (rb.velocity == Vector2.zero)
-            {
-                anim.SetFloat("velocidad", 0);
-            }
-            else
-            {
-                anim.SetFloat("velocidad", 1);
-            }
-
-            rb.gravityScale = 0;
-            float x = Input.GetAxis("Horizontal");
-            float y = Input.GetAxis("Vertical");
-
-            if (x > 0.2f || x < -0.2f)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, 0);
-            }
-
-            float modificadorVelocidad = y > 0 ? 0.5f : 1;
-            rb.velocity = new Vector2(rb.velocity.x, y * (velocidadDeMovimiento * modificadorVelocidad));
-
-            if (y == 0)
-            {
-                anim.SetFloat("velocidad", 0); // Animación de agarre
-            }
-            else
-            {
-                anim.SetFloat("velocidad", 1); // Animación de escalado
-            }
-
-            if (muroIzquierdo && transform.localScale.x > 0)
-            {
-                transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            }
-            else if (muroDerecho && transform.localScale.x < 0)
-            {
-                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-            }
-        }
-        else
-        {
-            // Lógica para soltarse de la pared
-            anim.SetBool("escalar", false);
-            anim.SetFloat("velocidad", 0);
-            rb.gravityScale = 3;
-
-            if (enMuro && !enSuelo && Input.GetAxis("Horizontal") != 0)
-            {
-                DeslizarPared();
-            }
         }
     }
 }
